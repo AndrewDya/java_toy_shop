@@ -30,3 +30,4 @@ bin/
 toy_shop.iml
 .idea
 venv/
+results.txt
