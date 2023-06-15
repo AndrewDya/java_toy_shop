@@ -6,7 +6,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
-        // Создание приоритетной очереди и заполнение игрушками
         PriorityQueue<Toy> toyQueue = new PriorityQueue<>();
         toyQueue.add(new Toy("1", "конструктор", 2));
         toyQueue.add(new Toy("2", "робот", 2));
@@ -27,19 +26,24 @@ public class Main {
 
     private static Toy getToy(PriorityQueue<Toy> toyQueue) {
         Random random = new Random();
-        int totalFrequency = toyQueue.stream().mapToInt(Toy::getFrequency).sum();
-        int randomNum = random.nextInt(totalFrequency);
-        int cumulativeFrequency = 0;
+        int randomNum = random.nextInt(10);
 
+        if (randomNum < 2) {
+            return getToyById(toyQueue, "1");
+        } else if (randomNum < 4) {
+            return getToyById(toyQueue, "2");
+        } else {
+            return getToyById(toyQueue, "3");
+        }
+    }
+
+    private static Toy getToyById(PriorityQueue<Toy> toyQueue, String id) {
         for (Toy toy : toyQueue) {
-            cumulativeFrequency += toy.getFrequency();
-            if (randomNum < cumulativeFrequency) {
+            if (toy.getId().equals(id)) {
                 return toy;
             }
         }
-
-        // В случае, если произошла ошибка при расчете веса, возвращаем первую игрушку из очереди
-        return toyQueue.peek();
+        return null; // id не найден
     }
 
     static class Toy implements Comparable<Toy> {
