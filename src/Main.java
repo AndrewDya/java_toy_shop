@@ -1,17 +1,61 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+import java.util.PriorityQueue;
+import java.util.Random;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Enter with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        // Создание приоритетной очереди и заполнение игрушками
+        PriorityQueue<Toy> toyQueue = new PriorityQueue<>();
+        toyQueue.add(new Toy("1", "конструктор", 2));
+        toyQueue.add(new Toy("2", "робот", 2));
+        toyQueue.add(new Toy("3", "кукла", 6));
 
-        // Press Shift+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        // Вызов метода Get и запись результатов в файл
+        // TODO: добавить код
+    }
 
-            // Press Shift+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
+    private static Toy getToy(PriorityQueue<Toy> toyQueue) {
+        Random random = new Random();
+        int totalFrequency = toyQueue.stream().mapToInt(Toy::getFrequency).sum();
+        int randomNum = random.nextInt(totalFrequency);
+        int cumulativeFrequency = 0;
+
+        for (Toy toy : toyQueue) {
+            cumulativeFrequency += toy.getFrequency();
+            if (randomNum < cumulativeFrequency) {
+                return toy;
+            }
+        }
+
+        // В случае, если произошла ошибка при расчете веса, возвращаем первую игрушку из очереди
+        return toyQueue.peek();
+    }
+
+    static class Toy implements Comparable<Toy> {
+        private String id;
+        private String name;
+        private int frequency;
+
+        public Toy(String id, String name, int frequency) {
+            this.id = id;
+            this.name = name;
+            this.frequency = frequency;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getFrequency() {
+            return frequency;
+        }
+
+        @Override
+        public int compareTo(Toy other) {
+            return Integer.compare(this.frequency, other.frequency);
         }
     }
 }
