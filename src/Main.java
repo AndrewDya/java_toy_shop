@@ -1,5 +1,8 @@
 import java.util.PriorityQueue;
 import java.util.Random;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
@@ -9,8 +12,17 @@ public class Main {
         toyQueue.add(new Toy("2", "робот", 2));
         toyQueue.add(new Toy("3", "кукла", 6));
 
-        // Вызов метода Get и запись результатов в файл
-        // TODO: добавить код
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("results.txt"));
+            for (int i = 0; i < 10; i++) {
+                Toy toy = getToy(toyQueue);
+                writer.write(toy.getId());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Ошибка при записи в файл: " + e.getMessage());
+        }
     }
 
     private static Toy getToy(PriorityQueue<Toy> toyQueue) {
